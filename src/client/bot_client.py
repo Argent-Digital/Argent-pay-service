@@ -1,11 +1,15 @@
 import httpx
-from schemas.pay_client_schema import SuccesPay
+from src.schemas.pay_client_schema import SuccesPay
 
 class ArgenBotClient:
-    def __init__(self, base_url: str = "http://127.0.0.1:8000"):
-        self.base_url = base_url
+    def __init__(self, base_url: str):
+        self.base_url = base_url.rstrip("/")
 
-        self.client = httpx.AsyncClient(base_url=base_url)
+        self.client = httpx.AsyncClient(base_url=base_url,
+                                        timeout=httpx.Timeout(10.0, connect=5.0))
+    
+    async def close(self):
+        await self.client.aclose()
 
     async def send_notification(self, user_id: int, amount: int):
         data = SuccesPay(user_id=user_id, amount=amount)
