@@ -2,7 +2,7 @@ services:
   argent-pay-service:
     build: .
     ports:
-      - "8002:8000"
+      - "8001:8000"
     volumes:
       - .:/app
     restart: always
