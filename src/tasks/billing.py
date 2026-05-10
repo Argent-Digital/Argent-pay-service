@@ -9,3 +9,9 @@ async def run_daily_billing():
 
         if billing_data:
             await _vpn_client.remove_keys(keys=billing_data.deleted_keys)
+
+            await _bot_client.post_user_warning_list(users=billing_data.user_lower)
+
+            print("Billing success")
+    except Exception as e:
+        print(f"Billig error: {e}")
