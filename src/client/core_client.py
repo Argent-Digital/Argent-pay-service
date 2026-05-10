@@ -1,5 +1,6 @@
 import httpx
 from src.schemas.pay_client_schema import SuccesPay, BillingStart
+from src.schemas.vpn_client_schema import BillingResponse
 
 class ArgentCoreClient:
     def __init__(self, base_url: str):
@@ -23,12 +24,12 @@ class ArgentCoreClient:
             print(f"Error amount{e}")
             return None
         
-    async def daily_billing(self, start: bool):
+    async def daily_billing(self, start: bool) -> BillingResponse:
         data = BillingStart(start=start)
         try:
             response = await self.client.post(f"/pay/start_billing", json=data.model_dump())
             response.raise_for_status()
-            return response.json()
+            return BillingResponse(**response.json())
         except Exception as e:
             print(f"Error billing request on core: {e}")
             return None

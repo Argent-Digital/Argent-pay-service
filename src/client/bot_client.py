@@ -1,5 +1,6 @@
 import httpx
-from src.schemas.pay_client_schema import SuccesPay
+from src.schemas.pay_client_schema import SuccesPay, UserWithLowBalance
+from typing import List
 
 class ArgenBotClient:
     def __init__(self, base_url: str):
@@ -19,4 +20,15 @@ class ArgenBotClient:
             return response.json()
         except Exception as e:
             print(f"Error of notification on bot service: {e}")
+            return None
+        
+    async def post_user_warning_list(self, users: List[UserWithLowBalance]):
+        try:
+            users_list = [user.model_dump(mode='json')  for user in users]
+
+            response = await self.client.post("/pays/warning_users", json=users_list)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            print(f"Error send users list on bot api: {e}")
             return None
