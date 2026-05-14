@@ -19,7 +19,6 @@ async def lifespan(app: FastAPI):
     print("Stopping argent pay")
     await _core_client.close()
     await _bot_client.close()
-    await _vpn_client.close()
     print("success closing client")
 
 app = FastAPI(

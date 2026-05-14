@@ -1,5 +1,6 @@
 import httpx
 from src.schemas.pay_client_schema import SuccesPay, UserWithLowBalance
+from src.schemas.vpn_client_schema import DeleteKeys, BillingResponse
 from typing import List
 
 class ArgenBotClient:
@@ -22,13 +23,13 @@ class ArgenBotClient:
             print(f"Error of notification on bot service: {e}")
             return None
         
-    async def post_user_warning_list(self, users: List[UserWithLowBalance]):
+    async def sending_notif_user(self, users_warning: List[UserWithLowBalance], users_del: List[DeleteKeys]) -> BillingResponse:
         try:
-            users_list = [user.model_dump(mode='json')  for user in users]
+            data = BillingResponse(deleted_keys=users_del, user_lower=users_warning)
 
-            response = await self.client.post("/pays/warning_users", json=users_list)
+            response = await self.client.post("/pays/warning_users", json=data.model_dump())
             response.raise_for_status()
-            return response.json()
+            return BillingResponse(**response.json())
         except Exception as e:
             print(f"Error send users list on bot api: {e}")
             return None
