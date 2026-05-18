@@ -1,6 +1,8 @@
 import httpx
 from src.schemas.pay_client_schema import SuccesPay, UserWithLowBalance
 from src.schemas.vpn_client_schema import DeleteKeys, BillingResponse
+from src.schemas.jwt_schema import TokenData
+from src.auth.security import create_access_token
 from typing import List
 
 class ArgenBotClient:
@@ -14,22 +16,27 @@ class ArgenBotClient:
         await self.client.aclose()
 
     async def send_notification(self, user_id: int, amount: int):
-        data = SuccesPay(user_id=user_id, amount=amount)
+        token_data = TokenData(user_id=user_id)
+        token = create_access_token(data=token_data)
+        data = SuccesPay(amount=amount)
         try:
-            response = await self.client.post(f"/pays/success_pay", json=data.model_dump())
+            header = {"Authorization": f"Bearer {token}"}
+            response = await self.client.post(f"/pays/success_pay", json=data.model_dump(), headers=header)
             response.raise_for_status()
             return response.json()
         except Exception as e:
             print(f"Error of notification on bot service: {e}")
             return None
         
-    async def sending_notif_user(self, users_warning: List[UserWithLowBalance], users_del: List[DeleteKeys]) -> BillingResponse:
+    async def sending_notif_user(self, users_warning: List[UserWithLowBalance], users_del: List[DeleteKeys], user_id: int = 0):
+        token_data = TokenData(user_id=user_id)
+        token = create_access_token(data=token_data)
         try:
             data = BillingResponse(deleted_keys=users_del, user_lower=users_warning)
-
-            response = await self.client.post("/pays/warning_users", json=data.model_dump())
+            header = {"Authorization": f"Bearer {token}"}
+            response = await self.client.post("/pays/warning_users", json=data.model_dump(), headers=header)
             response.raise_for_status()
-            return BillingResponse(**response.json())
+            return response.json()
         except Exception as e:
             print(f"Error send users list on bot api: {e}")
             return None

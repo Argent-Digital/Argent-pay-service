@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
 class SuccesPay(BaseModel):
-    user_id: int
     amount: int
 
 class BillingStart(BaseModel):
