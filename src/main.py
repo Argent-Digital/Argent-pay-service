@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.api.yookassa_api import router as yookassa_router
-from src.loader import _core_client, _bot_client, _vpn_client
+from src.loader import _core_client, _bot_client
 from src.tasks.scheduler import setup_scheduler, stop_scheduler
 
 @asynccontextmanager
