@@ -2,7 +2,7 @@ import httpx
 from src.schemas.pay_client_schema import SuccesPay, BillingStart
 from src.schemas.vpn_client_schema import BillingResponse
 from src.schemas.jwt_schema import TokenData
-from auth.security import create_access_token
+from src.auth.security import create_access_token
 
 class ArgentCoreClient:
     def __init__(self, base_url: str):
