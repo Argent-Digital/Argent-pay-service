@@ -10,7 +10,7 @@ class ArgentCoreClient:
 
         self.client = httpx.AsyncClient(
             base_url=base_url,
-            timeout=httpx.Timeout(10.0, connect=5.0)
+            timeout=httpx.Timeout(90.0, connect=5.0)
             )
         
     async def close(self):
