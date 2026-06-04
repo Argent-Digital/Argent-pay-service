@@ -1,6 +1,5 @@
 import httpx
-from src.schemas.pay_client_schema import SuccesPay, BillingStart
-from src.schemas.vpn_client_schema import BillingResponse
+from src.schemas.pay_client_schema import SuccesPay, BillingStart, BillingResponse
 from src.schemas.jwt_schema import TokenData
 from src.auth.security import create_access_token
 
@@ -33,11 +32,8 @@ class ArgentCoreClient:
         token_data = TokenData(user_id=user_id)
         token = create_access_token(data=token_data)
         data = BillingStart(start=start)
-        try:
-            header = {"Authorization": f"Bearer {token}" }
-            response = await self.client.post(f"/pay/start_billing", json=data.model_dump(), headers=header)
-            response.raise_for_status()
-            return BillingResponse(**response.json())
-        except Exception as e:
-            print(f"Error billing request on core: {e}")
-            return None
+
+        header = {"Authorization": f"Bearer {token}" }
+        response = await self.client.post(f"/pay/start_billing", json=data.model_dump(), headers=header)
+        response.raise_for_status()
+        return BillingResponse(**response.json())
