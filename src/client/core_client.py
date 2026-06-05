@@ -21,7 +21,7 @@ class ArgentCoreClient:
         data = SuccesPay(amount=amount)
         try:
             header = {"Authorization": f"Bearer {token}" }
-            response = await self.client.post(f"/users/update_balance", json=data.model_dump(), headers=header)
+            response = await self.client.post(f"/pay/update_balance", json=data.model_dump(), headers=header)
             response.raise_for_status()
             return response.json()
         except Exception as e:
