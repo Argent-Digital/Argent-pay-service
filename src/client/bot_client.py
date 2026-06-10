@@ -1,8 +1,7 @@
 import httpx
-from src.schemas.pay_client_schema import SuccesPay, UserWithLowBalance, IdsByDelUser, BillingResponse
+from src.schemas.pay_client_schema import SuccesPay, BillingResponse
 from src.schemas.jwt_schema import TokenData
 from src.auth.security import create_access_token
-from typing import List
 
 class ArgenBotClient:
     def __init__(self, base_url: str):
@@ -20,7 +19,7 @@ class ArgenBotClient:
         data = SuccesPay(amount=amount)
         try:
             header = {"Authorization": f"Bearer {token}"}
-            response = await self.client.post(f"/pays/success_pay", json=data.model_dump(), headers=header)
+            response = await self.client.post("/pays/success_pay", json=data.model_dump(), headers=header)
             response.raise_for_status()
             return response.json()
         except Exception as e:

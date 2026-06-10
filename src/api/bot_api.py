@@ -3,7 +3,7 @@ from src.tasks.url_payment_generator import create_payment
 from src.schemas.bot_schemas import CreatePaymentUrl, ReturnUrl
 from src.auth.dependencies import get_current_user_id
 
-router = APIRouter(tags=["Payment url generator"])
+router = APIRouter(prefix="/pay-url", tags=["Payment url generator"])
 
 @router.post("/create_url", response_model=ReturnUrl)
 async def create_payment_url(url_data: CreatePaymentUrl, user_id: int = Depends(get_current_user_id)):

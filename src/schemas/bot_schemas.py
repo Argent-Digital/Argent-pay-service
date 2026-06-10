@@ -1,7 +1,7 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 
 class CreatePaymentUrl(BaseModel):
     amount: int
 
 class ReturnUrl(BaseModel):
-    url: HttpUrl
+    url: str
