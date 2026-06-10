@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.api.yookassa_api import router as yookassa_router
+from src.api.bot_api import router as bot_router
 from src.loader import _core_client, _bot_client
 from src.tasks.scheduler import setup_scheduler, stop_scheduler
 
@@ -28,6 +29,7 @@ app = FastAPI(
 )
 
 app.include_router(yookassa_router)
+app.include_router(bot_router)
 
 @app.get("/")
 async def health_check():

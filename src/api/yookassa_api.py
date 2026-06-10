@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, Request
 from yookassa.domain.notification import WebhookNotificationFactory
-from src.config import settings
 from src.client.bot_client import ArgenBotClient
 from src.client.core_client import ArgentCoreClient
 from src.loader import get_bot_client, get_core_client

@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
+from yookassa import Configuration
 
 class Settings(BaseSettings):
     SHOP_ID: int
@@ -14,3 +15,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
+
+Configuration.configure(
+    account_id=settings.SHOP_ID,
+    secret_key=settings.SECRET_KEY.get_secret_value()
+)
