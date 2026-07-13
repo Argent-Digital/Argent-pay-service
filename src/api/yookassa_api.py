@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, Request
 from yookassa.domain.notification import WebhookNotificationFactory
+
 from src.client.bot_client import ArgenBotClient
 from src.client.core_client import ArgentCoreClient
 from src.loader import get_bot_client, get_core_client
-
 
 router = APIRouter(tags=["Yookassa Webhook"])
 
@@ -11,7 +11,7 @@ router = APIRouter(tags=["Yookassa Webhook"])
 async def yookassa_webhook(request: Request,
                            core_client: ArgentCoreClient = Depends(get_core_client),
                            bot_client: ArgenBotClient = Depends(get_bot_client)):
-    
+
     event_json = await request.json()
 
     try:
@@ -39,7 +39,7 @@ async def yookassa_webhook(request: Request,
                     print("Don't search user id in metadata (naverna)")
 
         return {"status": "success"}
-    
+
     except Exception as e:
         print(f"Error in webhook: {e}")
         return {"status": "error", "message": str(e)}

@@ -1,7 +1,9 @@
 import httpx
-from src.schemas.pay_client_schema import SuccesPay, BillingStart, BillingResponse
-from src.schemas.jwt_schema import TokenData
+
 from src.auth.security import create_access_token
+from src.schemas.jwt_schema import TokenData
+from src.schemas.pay_client_schema import BillingResponse, BillingStart, SuccesPay
+
 
 class ArgentCoreClient:
     def __init__(self, base_url: str):
@@ -11,7 +13,7 @@ class ArgentCoreClient:
             base_url=base_url,
             timeout=httpx.Timeout(90.0, connect=5.0)
             )
-        
+
     async def close(self):
         await self.client.aclose()
 
@@ -21,19 +23,19 @@ class ArgentCoreClient:
         data = SuccesPay(amount=amount)
         try:
             header = {"Authorization": f"Bearer {token}" }
-            response = await self.client.post(f"/pay/update_balance", json=data.model_dump(), headers=header)
+            response = await self.client.post("/pay/update_balance", json=data.model_dump(), headers=header)
             response.raise_for_status()
             return response.json()
         except Exception as e:
             print(f"Error amount: {e}")
             return None
-        
+
     async def daily_billing(self, start: bool, user_id: int = 0) -> BillingResponse:
         token_data = TokenData(user_id=user_id)
         token = create_access_token(data=token_data)
         data = BillingStart(start=start)
 
         header = {"Authorization": f"Bearer {token}" }
-        response = await self.client.post(f"/pay/start_billing", json=data.model_dump(), headers=header)
+        response = await self.client.post("/pay/start_billing", json=data.model_dump(), headers=header)
         response.raise_for_status()
         return BillingResponse(**response.json())

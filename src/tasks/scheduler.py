@@ -1,4 +1,5 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
 from src.tasks.billing import run_daily_billing
 
 scheduler = AsyncIOScheduler()

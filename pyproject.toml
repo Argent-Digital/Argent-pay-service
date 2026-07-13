@@ -1,0 +1,39 @@
+[project]
+name = "Argent-pay"
+version = "1.1.0"
+description = "Pay service for Argent VPN"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.136.1",
+    "uvicorn>=0.46.0",
+    "pydantic>=2.13.3",
+    "pydantic-settings>=2.14.0",
+    "httpx>=0.28.1",
+    "APScheduler>=3.11.2",
+    "python-dotenv>=1.2.2",
+    "yookassa>=3.10.1",
+    "python-jose>=3.5.0",
+    "cryptography>=48.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.0",          
+    "pytest-asyncio>=0.21.0", 
+    "ruff>=0.1.0",       
+]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "B", "I", "UP"]
+fixable = ["ALL"]
+allowed-confusables = []
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.params.Depends", "Depends"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]

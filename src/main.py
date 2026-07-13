@@ -1,15 +1,18 @@
-import uvicorn 
-from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.api.yookassa_api import router as yookassa_router
+
+import uvicorn
+from fastapi import FastAPI
+
 from src.api.bot_api import router as bot_router
-from src.loader import _core_client, _bot_client
+from src.api.yookassa_api import router as yookassa_router
+from src.loader import _bot_client, _core_client
 from src.tasks.scheduler import setup_scheduler, stop_scheduler
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting argent pay...")
-    
+
     await setup_scheduler()
     print("Stated scheduler")
     yield

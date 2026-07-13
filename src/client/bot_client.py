@@ -1,7 +1,9 @@
 import httpx
-from src.schemas.pay_client_schema import SuccesPay, BillingResponse
-from src.schemas.jwt_schema import TokenData
+
 from src.auth.security import create_access_token
+from src.schemas.jwt_schema import TokenData
+from src.schemas.pay_client_schema import BillingResponse, SuccesPay
+
 
 class ArgenBotClient:
     def __init__(self, base_url: str):
@@ -9,7 +11,7 @@ class ArgenBotClient:
 
         self.client = httpx.AsyncClient(base_url=base_url,
                                         timeout=httpx.Timeout(10.0, connect=5.0))
-    
+
     async def close(self):
         await self.client.aclose()
 
@@ -25,7 +27,7 @@ class ArgenBotClient:
         except Exception as e:
             print(f"Error of notification on bot service: {e}")
             return None
-        
+
     async def sending_notif_user(self, billing_response: BillingResponse, user_id: int = 0):
         token_data = TokenData(user_id=user_id)
         token = create_access_token(data=token_data)

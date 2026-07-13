@@ -1,6 +1,7 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from yookassa import Configuration
+
 
 class Settings(BaseSettings):
     SHOP_ID: int
@@ -11,7 +12,7 @@ class Settings(BaseSettings):
     SECRET_KEY_FOR_JWT: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
-    
+
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()

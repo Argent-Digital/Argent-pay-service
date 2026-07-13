@@ -1,6 +1,6 @@
-from src.config import settings
 from src.client.bot_client import ArgenBotClient
 from src.client.core_client import ArgentCoreClient
+from src.config import settings
 
 _core_client = ArgentCoreClient(base_url=settings.CORE_URL)
 _bot_client = ArgenBotClient(base_url=settings.BOT_URL)
